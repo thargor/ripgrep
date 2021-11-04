@@ -3,10 +3,11 @@ use std::fs::{self, File};
 use std::io::{self, Read, Write};
 use std::path::Path;
 use std::process;
-
 use clap::Shell;
 
 use app::{RGArg, RGArgKind};
+extern crate embed_resource;
+
 
 #[allow(dead_code)]
 #[path = "crates/core/app.rs"]
@@ -48,6 +49,9 @@ fn main() {
     if let Some(rev) = git_revision_hash() {
         println!("cargo:rustc-env=RIPGREP_BUILD_GIT_HASH={}", rev);
     }
+	
+	// embed windows application manifest file
+	embed_resource::compile("rg-manifest.rc");
 }
 
 fn git_revision_hash() -> Option<String> {
